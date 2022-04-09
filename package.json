@@ -20,8 +20,51 @@
   "eslintConfig": {
     "extends": [
       "react-app",
-      "react-app/jest"
-    ]
+      "react-app/jest",
+      "eslint:recommended"
+    ],
+    "plugins": [
+      "react"
+    ],
+    "rules": {
+      "prefer-arrow-callback": "error",
+      "no-unused-vars": "warn",
+      "no-console": "off",
+      "no-var": "error",
+      "no-const-assign": "error",
+      "prefer-destructuring": [
+        "error",
+        {
+          "object": true,
+          "array": true
+        }
+      ],
+      "padding-line-between-statements": [
+        "error",
+        {
+          "blankLine": "always",
+          "prev": [
+            "case",
+            "default"
+          ],
+          "next": "*"
+        },
+        {
+          "blankLine": "always",
+          "prev": "var",
+          "next": "return"
+        }
+      ],
+      "react/self-closing-comp": "error",
+      "react/no-unused-prop-types": "error",
+      "react/no-unused-state": "warn",
+      "react/sort-prop-types": [
+        "warn",
+        {
+          "ignoreCase": true
+        }
+      ]
+    }
   },
   "browserslist": {
     "production": [
@@ -34,5 +77,10 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "eslint": "^8.13.0",
+    "eslint-config-prettier": "^8.5.0",
+    "prettier": "^2.6.2"
   }
 }
