@@ -16,7 +16,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "preinstall": "git config core.hooksPath hooks"
+    "preinstall": "git config core.hooksPath gitHooks"
   },
   "eslintConfig": {
     "extends": [
