@@ -1,0 +1,16 @@
+{
+    "files.exclude": {
+      "src/config/serviceWorker.js": true,
+      "node_modules/": true,
+      "yarn.lock": true
+    },
+    "search.exclude": {
+      "src/config/serviceWorker.js": true,
+      "**/node_modules": true,
+      "yarn.lock": true
+    },
+    "editor.codeActionsOnSave": {
+      "source.fixAll": true
+    },
+    "editor.formatOnSave": true,
+  }
