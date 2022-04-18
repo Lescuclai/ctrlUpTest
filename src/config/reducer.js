@@ -1,5 +1,7 @@
 import { combineReducers } from "redux";
 
-const appReducer = combineReducers({});
+import connection from "../components/connection/connectionReducer";
+
+const appReducer = combineReducers({ connection });
 
 export default appReducer;
