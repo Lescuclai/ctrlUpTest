@@ -14,11 +14,9 @@ const Header = ({ userName, isAuthScreen }) => {
       )}
       <EnterpriseRepresentation>
         {isAuthScreen && <Title>CtrlUpTest</Title>}
-        <div>
-          <Link to="/members">
-            <LogoHeader src={logo} className="App-logo" alt="logo" />
-          </Link>
-        </div>
+        <Link to="/members">
+          <LogoHeader src={logo} className="App-logo" alt="logo" />
+        </Link>
       </EnterpriseRepresentation>
     </HeaderSection>
   );
@@ -39,12 +37,11 @@ const EnterpriseRepresentation = styled.div`
   justify-content: flex-end;
   align-items: center;
   font-size: 1.5em;
-  width: 100%;
+  flex: 1;
 `;
 
 const Title = styled.h2`
   padding-right: 2rem;
-  font-size: 1.5em;
 `;
 
 const LogoHeader = styled.img`
@@ -56,6 +53,8 @@ const LogoHeader = styled.img`
 const MemberConnected = styled.div`
   display: flex;
   align-items: center;
+  flex: 2;
+  color: inherit;
 `;
 
 const MemberRepresentation = styled.div`
@@ -63,12 +62,11 @@ const MemberRepresentation = styled.div`
   width: 4rem;
   height: 4rem;
   border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 `;
+
 const MemberName = styled.p`
   padding: 0 1.5rem;
+  font-size: 1.5rem;
 `;
 
 export default Header;
