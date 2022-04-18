@@ -9,6 +9,7 @@ const initialState = {
     isFormSent: false,
     isRegistered: null,
   },
+  apiData: [],
 };
 
 const connection = (state = initialState, action) =>
@@ -25,6 +26,10 @@ const connection = (state = initialState, action) =>
           formErrorMessage: action.payload.formErrorMessage,
           isFormSent: action.payload.isFormSent,
         };
+        break;
+
+      case types.SAVE_API_DATA:
+        draft.apiData = action.payload;
         break;
 
       default:

@@ -6,13 +6,17 @@ import { Form } from "semantic-ui-react";
 import styled from "styled-components";
 import Header from "../header/Header";
 
-const Connection = ({ user, handleChange, handleSubmit }) => {
-  const [apiUsers, setApiUsers] = useState([]);
-
+const Connection = ({
+  user,
+  apiData,
+  handleChange,
+  handleSubmit,
+  saveApiData,
+}) => {
   const getActions = async () => {
     const response = await fetch("https://jsonplaceholder.typicode.com/users");
     const data = await response.json();
-    setApiUsers(data);
+    saveApiData(data);
   };
   useEffect(() => {
     getActions();
@@ -22,7 +26,7 @@ const Connection = ({ user, handleChange, handleSubmit }) => {
     handleChange(e.target.value);
   };
 
-  const isRegistered = apiUsers
+  const isRegistered = apiData
     .map((apiUser) => apiUser.name)
     .includes(user.name);
 
@@ -63,9 +67,9 @@ const Connection = ({ user, handleChange, handleSubmit }) => {
             </Form.Field>
           </AuthForm>
           {user.isFormSent && (
-            <div>
+            <ButtonPosition>
               <Button>S'enregistrer</Button>
-            </div>
+            </ButtonPosition>
           )}
         </div>
       );
@@ -90,7 +94,7 @@ const Title = styled.h1`
 `;
 
 const Logo = styled.img`
-  height: 40vh;
+  height: 35vh;
   display: flex;
   margin: auto;
 `;
@@ -104,7 +108,7 @@ const Main = styled.section`
 `;
 
 const SubTitle = styled.h2`
-  padding-top: 1.5rem;
+  padding-top: 1rem;
   font-size: 1.5em;
   text-align: center;
 `;
@@ -117,6 +121,11 @@ const AuthForm = styled(Form)`
 
 const ErrorMess = styled.p`
   color: red;
+`;
+const ButtonPosition = styled.div`
+  display: flex;
+  justify-content: center;
+  padding: 3rem;
 `;
 
 const MemberRepresentation = styled.div`

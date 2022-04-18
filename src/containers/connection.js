@@ -1,9 +1,10 @@
 import { connect } from "react-redux";
 import Connection from "../components/connection/Connection";
-import { handleChange, handleSubmit } from "../config/actions";
+import { handleChange, handleSubmit, saveApiData } from "../config/actions";
 
 const mapState = (state) => ({
   user: state.connection.user,
+  apiData: state.connection.apiData,
 });
 
 const mapDispatch = (dispatch) => ({
@@ -12,6 +13,9 @@ const mapDispatch = (dispatch) => ({
   },
   handleSubmit: (payload) => {
     dispatch(handleSubmit(payload));
+  },
+  saveApiData: (payload) => {
+    dispatch(saveApiData(payload));
   },
 });
 
