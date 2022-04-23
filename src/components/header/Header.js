@@ -2,12 +2,19 @@ import React from "react";
 import styled from "styled-components";
 import logo from "../../icon.png";
 import { Link } from "react-router-dom";
+import { COLOR } from "../../config/constants";
 
-const Header = ({ userName, isAuthScreen }) => {
+const Header = ({ userName, isAuthScreen, handleMemberSelection }) => {
+  const onHandleMemberSelection = (selectedUserName) => {
+    handleMemberSelection(selectedUserName);
+  };
   return (
     <HeaderSection>
       {!isAuthScreen && (
-        <MemberConnected>
+        <MemberConnected
+          onClick={() => onHandleMemberSelection(userName)}
+          to="/projects"
+        >
           <MemberRepresentation />
           <MemberName>{userName}</MemberName>
         </MemberConnected>
@@ -30,6 +37,7 @@ const HeaderSection = styled.header`
   position: fixed;
   background-color: white;
   width: 100%;
+  top: 0;
 `;
 
 const EnterpriseRepresentation = styled.div`
@@ -50,7 +58,7 @@ const LogoHeader = styled.img`
   margin: auto;
 `;
 
-const MemberConnected = styled.div`
+const MemberConnected = styled(Link)`
   display: flex;
   align-items: center;
   flex: 2;
@@ -58,7 +66,7 @@ const MemberConnected = styled.div`
 `;
 
 const MemberRepresentation = styled.div`
-  background-color: #8ecae6;
+  background-color: ${COLOR.themeColor};
   width: 4rem;
   height: 4rem;
   border-radius: 50%;

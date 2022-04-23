@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 
 import logo from "../../icon.png";
 import { Button } from "semantic-ui-react";
 import { Form } from "semantic-ui-react";
 import styled from "styled-components";
-import Header from "../header/Header";
+import Header from "../../containers/header";
 
 const Connection = ({
   user,
