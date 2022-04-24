@@ -1,6 +1,10 @@
 import { connect } from "react-redux";
 import Connection from "../components/connection/Connection";
-import { handleChange, handleSubmit, saveApiData } from "../config/actions";
+import {
+  handleChange,
+  handleSubmit,
+  saveApiData,
+} from "../components/connection/connectionAction";
 
 const mapState = (state) => ({
   user: state.connection.user,

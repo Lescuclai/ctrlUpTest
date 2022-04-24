@@ -1,7 +1,7 @@
 import * as types from "../../config/types";
 
 export const handleChange = (payload) => ({
-  type: types.HANDLE_CHANGE,
+  type: types.HANDLE_CHANGE_FOR_CONNECTION,
   payload: payload,
 });
 

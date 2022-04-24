@@ -1,15 +1,24 @@
 import React from "react";
-import Header from "../header/Header";
+import Header from "../../containers/header";
 import styled from "styled-components";
 import { Button } from "semantic-ui-react";
+import { Link } from "react-router-dom";
+import { COLOR } from "../../config/constants";
 
-const Member = ({ user, apiData }) => {
+const Member = ({ user, apiData, handleMemberSelection }) => {
+  const onHandleMemberSelection = (userName) => {
+    handleMemberSelection(userName);
+  };
   return (
     <div>
       <Header userName={user.name} />
       <MembersSection>
         {apiData.map((user) => (
-          <Members key={user.name}>
+          <Members
+            key={user.name}
+            onClick={() => onHandleMemberSelection(user.name)}
+            to="/projects"
+          >
             <MembersRepresentation>{user.name[0]}</MembersRepresentation>
           </Members>
         ))}
@@ -28,7 +37,7 @@ const MembersSection = styled.section`
   position: relative;
   top: 9rem;
 `;
-const Members = styled.div`
+const Members = styled(Link)`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -46,13 +55,14 @@ const AddMemberButton = styled.footer`
   width: 100%;
 `;
 const MembersRepresentation = styled.div`
-  background-color: #8ecae6;
+  background-color: ${COLOR.themeColor};
   width: 8rem;
   height: 8rem;
   border-radius: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
+  color: black;
 `;
 
 export default Member;

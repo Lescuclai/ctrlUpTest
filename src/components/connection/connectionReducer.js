@@ -15,7 +15,7 @@ const initialState = {
 const connection = (state = initialState, action) =>
   produce(state, (draft) => {
     switch (action.type) {
-      case types.HANDLE_CHANGE:
+      case types.HANDLE_CHANGE_FOR_CONNECTION:
         draft.user = { name: action.payload };
         break;
 
