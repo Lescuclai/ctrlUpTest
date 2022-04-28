@@ -1,7 +1,17 @@
 import { createStore } from "redux";
 import { composeWithDevTools } from "redux-devtools-extension";
-import { persistStore } from "redux-persist";
+import { persistStore, persistReducer } from "redux-persist";
+import storage from "redux-persist/lib/storage";
 
 import appReducer from "./reducer";
 
-export const store = createStore(appReducer, {}, composeWithDevTools());
+const persistConfig = {
+  key: "root",
+  storage,
+};
+
+const persistedReducer = persistReducer(persistConfig, appReducer);
+
+export const store = createStore(persistedReducer, {}, composeWithDevTools());
+
+export const persistor = persistStore(store);
