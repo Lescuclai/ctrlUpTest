@@ -13,8 +13,6 @@ const connection = (state = initialState, action) =>
     switch (action.type) {
       case types.HANDLE_MEMBER_SELECTION:
         draft.member = action.payload;
-        console.log("member", action.payload);
-
         break;
 
       case types.HANDLE_MEMBER_SELECTION_IN_HEADER:
@@ -33,8 +31,6 @@ const connection = (state = initialState, action) =>
             formData: action.payload,
           },
         ];
-        console.log("payload", action.payload);
-        console.log("mem", state.member);
         break;
 
       default:
