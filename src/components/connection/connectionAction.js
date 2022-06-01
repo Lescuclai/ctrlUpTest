@@ -1,12 +1,12 @@
 import * as types from "../../config/types";
 
-export const handleChange = (payload) => ({
-  type: types.HANDLE_CHANGE_FOR_CONNECTION,
+export const changeValue = (payload) => ({
+  type: types.CHANGE_FOR_CONNECTION,
   payload: payload,
 });
 
-export const handleSubmit = (payload) => ({
-  type: types.HANDLE_SUBMIT,
+export const submitData = (payload) => ({
+  type: types.SUBMIT_FOR_CONNECTION,
   payload: payload,
 });
 

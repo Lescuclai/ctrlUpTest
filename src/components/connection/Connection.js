@@ -1,50 +1,56 @@
-import React, { useEffect } from "react";
+import { useEffect, useCallback } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 import logo from "../../icon.png";
 import { Button } from "semantic-ui-react";
 import { Form } from "semantic-ui-react";
 import styled from "styled-components";
-import Header from "../../containers/header";
+import Header from "../header/Header";
+import { changeValue, submitData, saveApiData } from "./connectionAction";
 
-const Connection = ({
-  user,
-  apiData,
-  handleChange,
-  handleSubmit,
-  saveApiData,
-}) => {
-  const getActions = async () => {
+const Connection = () => {
+  const user = useSelector((state) => state.connection.user);
+  const apiData = useSelector((state) => state.connection.apiData);
+
+  const dispatch = useDispatch();
+
+  const getActions = useCallback(async () => {
     const response = await fetch("https://jsonplaceholder.typicode.com/users");
     const data = await response.json();
-    saveApiData(data);
-  };
+    dispatch(saveApiData(data));
+  }, [dispatch]);
   useEffect(() => {
     getActions();
-  }, []);
+  }, [getActions]);
 
-  const onHandleChange = (e) => {
-    handleChange(e.target.value);
+  const handleChange = (e) => {
+    dispatch(changeValue(e.target.value));
   };
 
   const isRegistered = apiData
     .map((apiUser) => apiUser.name)
     .includes(user.name);
 
-  const onHandleSubmit = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     if (isRegistered)
-      handleSubmit({
-        name: user.name,
-        isRegistered,
-        formErrorMessage: "",
-        isFormSent: true,
-      });
-    handleSubmit({
-      name: user.name,
-      isRegistered,
-      formErrorMessage: "Désolé, vous n'êtes pas enregistré",
-      isFormSent: true,
-    });
+      dispatch(
+        submitData({
+          name: user.name,
+          isRegistered,
+          formErrorMessage: "",
+          isFormSent: true,
+        })
+      );
+    else
+      dispatch(
+        handleSubmit({
+          name: user.name,
+          isRegistered,
+          formErrorMessage: "Désolé, vous n'êtes pas enregistré",
+          isFormSent: true,
+        })
+      );
   };
 
   const component = () => {
@@ -54,12 +60,12 @@ const Connection = ({
           <Title>CtrlUpTest</Title>
           <Logo src={logo} className="App-logo" alt="logo" />
           <SubTitle>Se connecter</SubTitle>
-          <AuthForm onSubmit={onHandleSubmit}>
+          <AuthForm onSubmit={handleSubmit}>
             <Form.Field>
               <label>Nom et prénom</label>
               <input
                 placeholder="Entrer votre nom et prénom"
-                onChange={onHandleChange}
+                onChange={handleChange}
               />
               {user.isFormSent && (
                 <ErrorMess>{user.formErrorMessage}</ErrorMess>

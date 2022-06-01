@@ -11,19 +11,19 @@ const initialState = {
 const connection = (state = initialState, action) =>
   produce(state, (draft) => {
     switch (action.type) {
-      case types.HANDLE_MEMBER_SELECTION:
+      case types.SELECT_MEMBER:
         draft.member = action.payload;
         break;
 
-      case types.HANDLE_MEMBER_SELECTION_IN_HEADER:
+      case types.HEADER_MEMBER_SELECTION:
         draft.member = action.payload;
         break;
 
-      case types.SET_SELECTED_TAG:
+      case types.SELECT_TAG:
         draft.selectedTag = action.payload;
         break;
 
-      case types.HANDLE_SUBMIT_FOR_PROJECT:
+      case types.SUBMIT_FORM:
         draft.projects = [
           ...state.projects,
           {

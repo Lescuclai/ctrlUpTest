@@ -1,18 +1,25 @@
 import React from "react";
 import styled from "styled-components";
-import logo from "../../icon.png";
 import { Link } from "react-router-dom";
-import { COLOR } from "../../config/constants";
+import { useDispatch, useSelector } from "react-redux";
 
-const Header = ({ userName, isAuthScreen, handleMemberSelection }) => {
-  const onHandleMemberSelection = (selectedUserName) => {
-    handleMemberSelection(selectedUserName);
+import { COLOR } from "../../config/constants";
+import { headerMemberSelection } from "./headerAction";
+import logo from "../../icon.png";
+
+const Header = ({ isAuthScreen }) => {
+  const userName = useSelector((state) => state.connection.user.name);
+  const dispatch = useDispatch();
+
+  const handleMemberSelection = (selectedUserName) => {
+    dispatch(headerMemberSelection(selectedUserName));
   };
+
   return (
     <HeaderSection>
       {!isAuthScreen && (
         <MemberConnected
-          onClick={() => onHandleMemberSelection(userName)}
+          onClick={() => handleMemberSelection(userName)}
           to="/projects"
         >
           <MemberRepresentation />

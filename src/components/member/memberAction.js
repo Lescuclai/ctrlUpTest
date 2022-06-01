@@ -1,6 +1,6 @@
 import * as types from "../../config/types";
 
-export const handleMemberSelection = (payload) => ({
-  type: types.HANDLE_MEMBER_SELECTION,
+export const selectMember = (payload) => ({
+  type: types.SELECT_MEMBER,
   payload,
 });

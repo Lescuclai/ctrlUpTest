@@ -15,11 +15,11 @@ const initialState = {
 const connection = (state = initialState, action) =>
   produce(state, (draft) => {
     switch (action.type) {
-      case types.HANDLE_CHANGE_FOR_CONNECTION:
+      case types.CHANGE_FOR_CONNECTION:
         draft.user = { name: action.payload };
         break;
 
-      case types.HANDLE_SUBMIT:
+      case types.SUBMIT_FOR_CONNECTION:
         draft.user = {
           name: action.payload.name,
           isRegistered: action.payload.isRegistered,
