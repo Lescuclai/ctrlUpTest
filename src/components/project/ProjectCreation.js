@@ -1,11 +1,18 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { Button, Form, Label, Icon } from "semantic-ui-react";
-import Header from "../../containers/header";
+import Header from "../header/Header";
 import { Link } from "react-router-dom";
 import { RANDOM_COLOR } from "../../config/constants";
+import { submitForm } from "./projectAction";
+import { useDispatch } from "react-redux";
 
-const ProjectCreation = ({ user, handleSubmit }) => {
+const ProjectCreation = () => {
+  const dispatch = useDispatch();
+  const handleSubmit = (payload) => {
+    dispatch(submitForm(payload));
+  };
+
   const [formData, setFormData] = useState();
   const [multiValueParticipant, setMultiValueParticipant] = useState([]);
   const [multiValueTag, setMultiValueTag] = useState([]);
@@ -77,7 +84,7 @@ const ProjectCreation = ({ user, handleSubmit }) => {
 
   return (
     <NewProjectSection>
-      <Header userName={user.name} />
+      <Header />
       <Container>
         <h3>Nouveau projet</h3>
         <Link to="/projects">

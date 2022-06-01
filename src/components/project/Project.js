@@ -1,27 +1,35 @@
 import React from "react";
 import styled from "styled-components";
-import { Button, Label } from "semantic-ui-react";
-import Header from "../../containers/header";
 import { Link } from "react-router-dom";
-import { COLOR } from "../../config/constants";
+import { useDispatch, useSelector } from "react-redux";
+import { Button, Label } from "semantic-ui-react";
 
-const Project = ({
-  user,
-  setSelectedTag,
-  selectedTag,
-  selectedMemberProject,
-  selectedMemberTags,
-}) => {
+import { COLOR } from "../../config/constants";
+import Header from "../header/Header";
+
+import { selectTag } from "./projectAction";
+import { getSelectedMemberProject, getSelectedMemberTags } from "./selector";
+
+const Project = () => {
+  const dispatch = useDispatch();
+
+  const selectedTag = useSelector((state) => state.project.selectedTag);
+
+  const selectedMemberProject = useSelector((state) =>
+    getSelectedMemberProject(state)
+  );
+  const selectedMemberTags = useSelector((state) =>
+    getSelectedMemberTags(state)
+  );
   const handleSelectedTag = (tag) => {
     if (selectedTag === tag) {
-      return setSelectedTag("");
-    }
-    setSelectedTag(tag);
+      return dispatch(selectTag(""));
+    } else return dispatch(selectTag(tag));
   };
 
   return (
     <React.Fragment>
-      <Header userName={user.name} />
+      <Header />
       {!selectedMemberProject ? (
         <Main>
           <NoProject>Aucun projet, il est temps d'en créer un !</NoProject>

@@ -1,11 +1,11 @@
 import * as types from "../../config/types";
 
-export const handleSubmit = (payload) => ({
-  type: types.HANDLE_SUBMIT_FOR_PROJECT,
+export const submitForm = (payload) => ({
+  type: types.SUBMIT_FORM,
   payload,
 });
 
-export const setSelectedTag = (payload) => ({
-  type: types.SET_SELECTED_TAG,
+export const selectTag = (payload) => ({
+  type: types.SELECT_TAG,
   payload,
 });

@@ -1,9 +1,9 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import Connection from "./containers/connection";
-import Member from "./containers/member";
-import Project from "./containers/project";
-import ProjectCreation from "./containers/projectCreation";
+import Connection from "./components/connection/Connection";
+import Member from "./components/member/Member";
+import Project from "./components/project/Project";
+import ProjectCreation from "./components/project/ProjectCreation";
 
 function App() {
   return (

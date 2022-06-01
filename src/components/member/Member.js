@@ -1,22 +1,28 @@
 import React from "react";
-import Header from "../../containers/header";
+import Header from "../header/Header";
 import styled from "styled-components";
 import { Button } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 import { COLOR } from "../../config/constants";
+import { useDispatch, useSelector } from "react-redux";
 
-const Member = ({ user, apiData, handleMemberSelection }) => {
-  const onHandleMemberSelection = (userName) => {
-    handleMemberSelection(userName);
+import { selectMember } from "./memberAction";
+
+const Member = () => {
+  const dispatch = useDispatch();
+  const handleMemberSelection = (name) => {
+    dispatch(selectMember(name));
   };
+
+  const apiData = useSelector((state) => state.connection.apiData);
   return (
     <div>
-      <Header userName={user.name} />
+      <Header />
       <MembersSection>
         {apiData.map((user) => (
           <Members
             key={user.name}
-            onClick={() => onHandleMemberSelection(user.name)}
+            onClick={() => handleMemberSelection(user.name)}
             to="/projects"
           >
             <MembersRepresentation>{user.name[0]}</MembersRepresentation>
