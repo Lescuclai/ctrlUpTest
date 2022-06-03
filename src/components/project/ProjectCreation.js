@@ -4,13 +4,14 @@ import { Button, Form, Label, Icon } from "semantic-ui-react";
 import Header from "../header/Header";
 import { Link } from "react-router-dom";
 import { RANDOM_COLOR } from "../../config/constants";
-import { submitForm } from "./projectAction";
+import * as projectActions from "./projectSlice";
+
 import { useDispatch } from "react-redux";
 
 const ProjectCreation = () => {
   const dispatch = useDispatch();
   const handleSubmit = (payload) => {
-    dispatch(submitForm(payload));
+    dispatch(projectActions.submitForm(payload));
   };
 
   const [formData, setFormData] = useState();

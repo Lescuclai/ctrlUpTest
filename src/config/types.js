@@ -2,6 +2,9 @@
 export const CHANGE_FOR_CONNECTION = "CHANGE_FOR_CONNECTION";
 export const SUBMIT_FOR_CONNECTION = "SUBMIT_FOR_CONNECTION";
 export const SAVE_API_DATA = "SAVE_API_DATA";
+export const FETCHING = "FETCHING";
+export const RESOLVED = "RESOLVED";
+export const REJECTED = "REJECTED";
 
 //Project
 export const SUBMIT_FORM = "SUBMIT_FORM";

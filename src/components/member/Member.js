@@ -6,20 +6,20 @@ import { Link } from "react-router-dom";
 import { COLOR } from "../../config/constants";
 import { useDispatch, useSelector } from "react-redux";
 
-import { selectMember } from "./memberAction";
+import * as projectActions from "../project/projectSlice";
 
 const Member = () => {
   const dispatch = useDispatch();
   const handleMemberSelection = (name) => {
-    dispatch(selectMember(name));
+    dispatch(projectActions.selectMember(name));
   };
 
-  const apiData = useSelector((state) => state.connection.apiData);
+  const data = useSelector((state) => state.connection.data);
   return (
     <div>
       <Header />
       <MembersSection>
-        {apiData.map((user) => (
+        {data.map((user) => (
           <Members
             key={user.name}
             onClick={() => handleMemberSelection(user.name)}

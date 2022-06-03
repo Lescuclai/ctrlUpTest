@@ -1,51 +1,50 @@
-import { useEffect, useCallback } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { useDispatch, useSelector, useStore } from "react-redux";
 
 import logo from "../../icon.png";
 import { Button } from "semantic-ui-react";
 import { Form } from "semantic-ui-react";
 import styled from "styled-components";
 import Header from "../header/Header";
-import { changeValue, submitData, saveApiData } from "./connectionAction";
+import { changeValue, submitData } from "./connectionAction";
+import { fetchOrUpdateApiData } from "./connectionReducer";
 
 const Connection = () => {
-  const user = useSelector((state) => state.connection.user);
-  const apiData = useSelector((state) => state.connection.apiData);
-
   const dispatch = useDispatch();
+  const store = useStore();
 
-  const getActions = useCallback(async () => {
-    const response = await fetch("https://jsonplaceholder.typicode.com/users");
-    const data = await response.json();
-    dispatch(saveApiData(data));
-  }, [dispatch]);
   useEffect(() => {
-    getActions();
-  }, [getActions]);
+    fetchOrUpdateApiData(store);
+    // On suit la recommandation d'ESLint de passer le store
+    // en dépendances car il est utilisé dans l'effet
+    // cela n'as pas d'impacte sur le fonctionnement car le store ne change jamais
+  }, [store]);
+
+  const data = useSelector((state) => state.connection.data);
+  const user = useSelector((state) => state.connection.user);
 
   const handleChange = (e) => {
     dispatch(changeValue(e.target.value));
   };
 
-  const isRegistered = apiData
-    .map((apiUser) => apiUser.name)
-    .includes(user.name);
+  const isRegistered = data
+    ?.map((apiUser) => apiUser?.name)
+    .includes(user?.name);
 
   const handleSubmit = (e) => {
-    e.preventDefault();
     if (isRegistered)
-      dispatch(
+      return dispatch(
         submitData({
-          name: user.name,
+          name: user?.name,
           isRegistered,
           formErrorMessage: "",
           isFormSent: true,
         })
       );
     else
-      dispatch(
-        handleSubmit({
-          name: user.name,
+      return dispatch(
+        submitData({
+          name: user?.name,
           isRegistered,
           formErrorMessage: "Désolé, vous n'êtes pas enregistré",
           isFormSent: true,
