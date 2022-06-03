@@ -4,7 +4,8 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 import { COLOR } from "../../config/constants";
-import { headerMemberSelection } from "./headerAction";
+import * as projectAction from "../project/projectSlice";
+
 import logo from "../../icon.png";
 
 const Header = ({ isAuthScreen }) => {
@@ -12,7 +13,7 @@ const Header = ({ isAuthScreen }) => {
   const dispatch = useDispatch();
 
   const handleMemberSelection = (selectedUserName) => {
-    dispatch(headerMemberSelection(selectedUserName));
+    dispatch(projectAction.headerMemberSelection(selectedUserName));
   };
 
   return (
