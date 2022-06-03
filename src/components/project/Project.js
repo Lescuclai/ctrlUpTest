@@ -3,11 +3,11 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Label } from "semantic-ui-react";
+import * as projectActions from "./projectSlice";
 
 import { COLOR } from "../../config/constants";
 import Header from "../header/Header";
 
-import { selectTag } from "./projectAction";
 import { getSelectedMemberProject, getSelectedMemberTags } from "./selector";
 
 const Project = () => {
@@ -23,8 +23,8 @@ const Project = () => {
   );
   const handleSelectedTag = (tag) => {
     if (selectedTag === tag) {
-      return dispatch(selectTag(""));
-    } else return dispatch(selectTag(tag));
+      return dispatch(projectActions.selectTag(""));
+    } else return dispatch(projectActions.selectTag(tag));
   };
 
   return (
