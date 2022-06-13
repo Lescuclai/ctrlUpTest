@@ -1,23 +1,5 @@
 import produce from "immer";
-import {
-  freelancesResolved,
-  freelancesFetching,
-  freelancesRejected,
-} from "./connectionAction";
-
-import * as types from "../../config/types";
-
-const initialState = {
-  user: {
-    name: "",
-    formErrorMessage: "",
-    isFormSent: false,
-    isRegistered: null,
-  },
-  status: "void",
-  data: null,
-  error: null,
-};
+import { createSlice } from "@reduxjs/toolkit";
 
 // cette fonction est une action asynchrone
 // elle attend le store redux en paramètre
@@ -28,42 +10,55 @@ export async function fetchOrUpdateApiData(store) {
     return;
   }
   // ici on indique que la requête est en cours
-  store.dispatch(freelancesFetching());
+  store.dispatch(fetchApiData());
   try {
     const response = await fetch("https://jsonplaceholder.typicode.com/users");
     const data = await response.json();
-    store.dispatch(freelancesResolved(data));
+    store.dispatch(resolvedApiData(data));
   } catch (error) {
-    store.dispatch(freelancesRejected(error));
+    store.dispatch(rejectedApiData(error));
   }
 }
 
-const connection = (state = initialState, action) =>
-  produce(state, (draft) => {
-    switch (action.type) {
-      case types.CHANGE_FOR_CONNECTION:
-        draft.user.name = action.payload;
-        if (draft.user.name === "") {
-          draft.user.formErrorMessage = "";
-          draft.user.isFormSent = false;
-        }
-        break;
+const { actions, reducer } = createSlice({
+  // le nom du slice
+  name: "connection",
+  // le state initial
 
-      case types.SUBMIT_FOR_CONNECTION:
+  initialState: {
+    user: {
+      name: "",
+      formErrorMessage: "",
+      isFormSent: false,
+      isRegistered: null,
+    },
+    status: "void",
+    data: null,
+    error: null,
+  },
+  // reducers permet de définir les actions et le reducer
+  reducers: {
+    submitForConnection: (state, action) => {
+      return produce(state, (draft) => {
         draft.user = {
           name: action.payload.name,
           isRegistered: action.payload.isRegistered,
           formErrorMessage: action.payload.formErrorMessage,
           isFormSent: action.payload.isFormSent,
         };
-        break;
-
-      case types.SAVE_API_DATA:
-        draft.apiData = action.payload;
-        break;
-
-      case types.FETCHING:
-        console.log("fetch");
+      });
+    },
+    changeForConnection: (state, action) => {
+      return produce(state, (draft) => {
+        draft.user.name = action.payload;
+        if (draft.user.name === "") {
+          draft.user.formErrorMessage = "";
+          draft.user.isFormSent = false;
+        }
+      });
+    },
+    fetchApiData: (state, action) => {
+      return produce(state, (draft) => {
         switch (draft.status) {
           case "void":
             draft.status = "pending";
@@ -81,27 +76,34 @@ const connection = (state = initialState, action) =>
           default:
             break;
         }
-        break;
-
-      case types.RESOLVED:
+      });
+    },
+    resolvedApiData: (state, action) => {
+      return produce(state, (draft) => {
         if (draft.status === "pending" || draft.status === "updating") {
           draft.data = action.payload;
           draft.status = "resolved";
         }
-
-        break;
-
-      case types.REJECTED:
+      });
+    },
+    rejectedApiData: (state, action) => {
+      return produce(state, (draft) => {
         if (draft.status === "pending" || draft.status === "updating") {
           draft.status = "rejected";
           draft.error = action.payload;
           draft.data = null;
         }
-        break;
+      });
+    },
+  },
+});
 
-      default:
-        break;
-    }
-  });
+export const {
+  rejectedApiData,
+  resolvedApiData,
+  fetchApiData,
+  changeForConnection,
+  submitForConnection,
+} = actions;
 
-export default connection;
+export default reducer;

@@ -6,15 +6,14 @@ import { Button } from "semantic-ui-react";
 import { Form } from "semantic-ui-react";
 import styled from "styled-components";
 import Header from "../header/Header";
-import { changeValue, submitData } from "./connectionAction";
-import { fetchOrUpdateApiData } from "./connectionReducer";
+import * as connectionAction from "./connectionSlice";
 
 const Connection = () => {
   const dispatch = useDispatch();
   const store = useStore();
 
   useEffect(() => {
-    fetchOrUpdateApiData(store);
+    connectionAction.fetchOrUpdateApiData(store);
     // On suit la recommandation d'ESLint de passer le store
     // en dépendances car il est utilisé dans l'effet
     // cela n'as pas d'impacte sur le fonctionnement car le store ne change jamais
@@ -24,7 +23,7 @@ const Connection = () => {
   const user = useSelector((state) => state.connection.user);
 
   const handleChange = (e) => {
-    dispatch(changeValue(e.target.value));
+    dispatch(connectionAction.changeForConnection(e.target.value));
   };
 
   const isRegistered = data
@@ -34,7 +33,7 @@ const Connection = () => {
   const handleSubmit = (e) => {
     if (isRegistered)
       return dispatch(
-        submitData({
+        connectionAction.submitForConnection({
           name: user?.name,
           isRegistered,
           formErrorMessage: "",
@@ -43,7 +42,7 @@ const Connection = () => {
       );
     else
       return dispatch(
-        submitData({
+        connectionAction.submitForConnection({
           name: user?.name,
           isRegistered,
           formErrorMessage: "Désolé, vous n'êtes pas enregistré",
