@@ -19,13 +19,13 @@ const Member = () => {
     <div>
       <Header />
       <MembersSection>
-        {data.map((user) => (
+        {data?.users?.map((user) => (
           <Members
-            key={user.name}
-            onClick={() => handleMemberSelection(user.name)}
+            key={user.pseudo}
+            onClick={() => handleMemberSelection(user?.pseudo)}
             to="/projects"
           >
-            <MembersRepresentation>{user.name[0]}</MembersRepresentation>
+            <MembersRepresentation>{user.pseudo[0]}</MembersRepresentation>
           </Members>
         ))}
       </MembersSection>

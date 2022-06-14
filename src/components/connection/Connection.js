@@ -1,5 +1,6 @@
 import { useEffect } from "react";
-import { useDispatch, useSelector, useStore } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useQuery, gql } from "@apollo/client";
 
 import logo from "../../icon.png";
 import { Button } from "semantic-ui-react";
@@ -10,41 +11,59 @@ import * as connectionAction from "./connectionSlice";
 
 const Connection = () => {
   const dispatch = useDispatch();
-  const store = useStore();
+
+  const userData = gql`
+    {
+      users {
+        pseudo
+        id
+      }
+    }
+  `;
+
+  const { loading, error, data } = useQuery(userData);
 
   useEffect(() => {
-    connectionAction.fetchOrUpdateApiData(store);
-    // On suit la recommandation d'ESLint de passer le store
-    // en dépendances car il est utilisé dans l'effet
-    // cela n'as pas d'impacte sur le fonctionnement car le store ne change jamais
-  }, [store]);
+    if (loading) {
+      return;
+    } else if (data) {
+      dispatch(connectionAction.resolvedApiData(data));
+      return;
+    } else {
+      dispatch(connectionAction.rejectedApiData(error));
+      return;
+    }
+  }, [data, loading, error, dispatch]);
 
-  const data = useSelector((state) => state.connection.data);
   const user = useSelector((state) => state.connection.user);
 
   const handleChange = (e) => {
     dispatch(connectionAction.changeForConnection(e.target.value));
   };
 
-  const isRegistered = data
-    ?.map((apiUser) => apiUser?.name)
-    .includes(user?.name);
+  let isRegistered = () => {
+    if (!loading) {
+      return Object.values(data?.users)
+        ?.map((user) => user?.pseudo)
+        ?.includes(user?.name);
+    }
+  };
 
   const handleSubmit = (e) => {
-    if (isRegistered)
+    if (isRegistered()) {
       return dispatch(
         connectionAction.submitForConnection({
           name: user?.name,
-          isRegistered,
+          isRegistered: isRegistered(),
           formErrorMessage: "",
           isFormSent: true,
         })
       );
-    else
+    } else
       return dispatch(
         connectionAction.submitForConnection({
           name: user?.name,
-          isRegistered,
+          isRegistered: isRegistered(),
           formErrorMessage: "Désolé, vous n'êtes pas enregistré",
           isFormSent: true,
         })
