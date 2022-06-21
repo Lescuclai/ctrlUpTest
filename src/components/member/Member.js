@@ -1,25 +1,54 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Header from "../header/Header";
 import styled from "styled-components";
 import { Button } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 import { COLOR } from "../../config/constants";
 import { useDispatch, useSelector } from "react-redux";
+import { useQuery, gql } from "@apollo/client";
 
 import * as projectActions from "../project/projectSlice";
+import * as connectionAction from "../connection/connectionSlice";
 
 const Member = () => {
   const dispatch = useDispatch();
+
+  const userData = gql`
+    {
+      users {
+        pseudo
+        id
+      }
+    }
+  `;
+
+  const { loading, data } = useQuery(userData);
+
+  const storedUserData = useSelector((state) => state.connection.data);
+
+  useEffect(() => {
+    if (loading) return;
+    if (
+      data &&
+      !(
+        !!Object.keys(data.users).length !==
+        !!Object.keys(storedUserData.users).length
+      )
+    ) {
+      dispatch(connectionAction.resolvedApiData(data));
+      return;
+    }
+  }, [data, dispatch, storedUserData, loading]);
+
   const handleMemberSelection = (name) => {
     dispatch(projectActions.selectMember(name));
   };
 
-  const data = useSelector((state) => state.connection.data);
   return (
     <div>
       <Header />
       <MembersSection>
-        {data?.users?.map((user) => (
+        {storedUserData?.users?.map((user) => (
           <Members
             key={user.pseudo}
             onClick={() => handleMemberSelection(user?.pseudo)}

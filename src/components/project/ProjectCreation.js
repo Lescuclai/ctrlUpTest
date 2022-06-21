@@ -4,53 +4,70 @@ import { Button, Form, Label, Icon } from "semantic-ui-react";
 import Header from "../header/Header";
 import { Link } from "react-router-dom";
 import { RANDOM_COLOR } from "../../config/constants";
-import * as projectActions from "./projectSlice";
+import { gql, useMutation } from "@apollo/client";
 
-import { useDispatch } from "react-redux";
+const ADD_PROJECT = gql`
+  mutation toto($projet: String!, $tags: [String]!, $participants: [ID]!) {
+    addProject(name: $projet, tags: $tags, participants: $participants) {
+      name
+      tags
+      participants {
+        id
+      }
+      id
+    }
+  }
+`;
 
 const ProjectCreation = () => {
-  const dispatch = useDispatch();
-  const handleSubmit = (payload) => {
-    dispatch(projectActions.submitForm(payload));
-  };
-
   const [formData, setFormData] = useState();
   const [multiValueParticipant, setMultiValueParticipant] = useState([]);
   const [multiValueTag, setMultiValueTag] = useState([]);
   const [isFocus, setIsFocus] = useState(false);
 
-  const manageChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-      tag: multiValueTag.length === 0 ? [e.target.value] : [...multiValueTag],
-      participant:
-        multiValueParticipant.length === 0
-          ? [e.target.value]
-          : [...multiValueParticipant],
-    });
+  const [toto, { data, loading, error }] = useMutation(ADD_PROJECT);
+
+  const projectDataSubmit = () => {
+    formData &&
+      toto({
+        variables: {
+          projet: formData?.projet,
+          tags: formData?.tags,
+          participants: formData?.participants,
+        },
+      });
+  };
+
+  const handleSubmit = () => {
+    projectDataSubmit();
   };
 
   const manageKeyPress = (e) => {
     if (
-      e.target.name === "participant" &&
+      e.target.name === "participants" &&
+      e.target.value &&
       !multiValueParticipant.includes(e.target.value)
     )
       setMultiValueParticipant([...multiValueParticipant, e.target.value]);
 
-    if (e.target.name === "tag" && !multiValueTag.includes(e.target.value))
+    if (
+      e.target.name === "tags" &&
+      e.target.value &&
+      !multiValueTag.includes(e.target?.value)
+    )
       setMultiValueTag([...multiValueTag, e.target.value]);
   };
 
-  const onHandleChange = (e) => {
-    manageChange(e);
-  };
-
-  const preventDefault = (e) => {
-    e.preventDefault();
-  };
-  const onHandleSubmit = () => {
-    handleSubmit(formData);
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target?.value,
+      tags: multiValueTag.length === 0 ? [e.target.value] : [...multiValueTag],
+      participants:
+        multiValueParticipant.length === 0
+          ? [e.target.value]
+          : [...multiValueParticipant],
+    });
   };
 
   const handleKeyPress = (e) => {
@@ -79,7 +96,7 @@ const ProjectCreation = () => {
   };
   const handleOnBlur = (e) => {
     manageKeyPress(e);
-    manageChange(e);
+    handleChange(e);
     setIsFocus(false);
   };
 
@@ -93,14 +110,14 @@ const ProjectCreation = () => {
         </Link>
       </Container>
 
-      <ProjectCreationForm onSubmit={preventDefault}>
+      <ProjectCreationForm onSubmit={(e) => e.preventDefault}>
         <Form.Field required>
           <label>Nom du projet</label>
           <Form.Input
             required
             placeholder="Entrer le nom de votre projet"
             name="projet"
-            onChange={onHandleChange}
+            onChange={handleChange}
             onFocus={handleOnFocus}
             onBlur={handleOnBlur}
           />
@@ -110,8 +127,8 @@ const ProjectCreation = () => {
           <Form.Input
             required
             placeholder="Taper 'Enter' entre chaque tag"
-            name="tag"
-            onChange={onHandleChange}
+            name="tags"
+            onChange={handleChange}
             onKeyDown={handleKeyPress}
             onFocus={handleOnFocus}
             onBlur={handleOnBlur}
@@ -137,37 +154,39 @@ const ProjectCreation = () => {
           <Form.Input
             required
             placeholder="Taper 'Enter' entre chaque participant"
-            name="participant"
-            onChange={onHandleChange}
+            name="participants"
+            onChange={handleChange}
             onKeyDown={handleKeyPress}
             onFocus={handleOnFocus}
             onBlur={handleOnBlur}
           />
-          <div>
-            {multiValueParticipant.map((participant) => (
-              <Label
-                key={participant}
-                circular
-                color={RANDOM_COLOR()}
-                onClick={() => handleOnClick(participant)}
-              >
-                {participant}
-                <Icon name="delete" />
-              </Label>
-            ))}
-          </div>
+          {
+            <div>
+              {multiValueParticipant.map((participant) => (
+                <Label
+                  key={participant}
+                  circular
+                  color={RANDOM_COLOR()}
+                  onClick={() => handleOnClick(participant)}
+                >
+                  {participant}
+                  <Icon name="delete" />
+                </Label>
+              ))}
+            </div>
+          }
         </Form.Field>
 
         <SendForm>
           <Button
             disabled={
               !!(
-                !formData?.tag ||
+                !formData?.tags ||
                 !formData?.projet ||
-                !formData?.participant
+                !formData?.participants
               ) || isFocus
             }
-            onClick={onHandleSubmit}
+            onClick={handleSubmit}
           >
             <Link to="/projects">Commencer</Link>
           </Button>

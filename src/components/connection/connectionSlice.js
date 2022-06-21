@@ -50,7 +50,6 @@ const { actions, reducer } = createSlice({
 export const {
   rejectedApiData,
   resolvedApiData,
-  fetchApiData,
   changeForConnection,
   submitForConnection,
 } = actions;
